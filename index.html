@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>颜彪 · AI训练师 · 杭州</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0d0f;--bg2:#141418;--bg3:#1c1c22;--surface:#22222a;--border:#2e2e3a;
+  --accent:#e8c97a;--accent2:#7ab8e8;--accent3:#e87a9a;
+  --text:#e8e8f0;--text2:#9898b0;--text3:#5a5a70;
+  --serif:'Noto Serif SC',serif;--sans:'Noto Sans SC',sans-serif;--mono:'Space Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;cursor:none}
+.cursor{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s}
+.cursor-ring{width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease;opacity:.5}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.3}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(13,13,15,.85);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;color:var(--accent);letter-spacing:.1em;text-decoration:none}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-family:var(--mono);transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--accent);transform:scaleX(0);transition:transform .2s}
+.nav-links a:hover{color:var(--accent)}.nav-links a:hover::after{transform:scaleX(1)}
+.nav-status{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pdot 2s infinite}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.4rem}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:6rem 3rem 3rem;position:relative;overflow:hidden}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.3;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.hero-orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(232,201,122,.12) 0%,transparent 70%);top:-100px;right:-100px;animation:f1 8s ease-in-out infinite}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(122,184,232,.08) 0%,transparent 70%);bottom:-50px;left:10%;animation:f2 10s ease-in-out infinite}
+@keyframes f1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
+@keyframes f2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-30px)}}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-tag{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fup .8s .2s forwards;min-height:1.4em}
+.hero-name{font-family:var(--serif);font-size:clamp(3.5rem,9vw,7rem);font-weight:700;line-height:1;margin-bottom:1.5rem;opacity:0;animation:fup .8s .4s forwards}
+.hero-name .outline{color:transparent;-webkit-text-stroke:1px var(--accent)}
+.hero-desc{font-size:1.05rem;color:var(--text2);max-width:600px;margin-bottom:2.5rem;line-height:2;opacity:0;animation:fup .8s .6s forwards}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:3rem;opacity:0;animation:fup .8s .7s forwards}
+.htag{padding:.35rem .9rem;border:1px solid var(--border);border-radius:2px;font-size:.78rem;color:var(--text2);font-family:var(--mono);transition:all .2s;cursor:default}
+.htag:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,201,122,.05)}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fup .8s .8s forwards}
+.btn{padding:.8rem 2rem;font-size:.82rem;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-p{background:var(--accent);color:var(--bg);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn-p:hover{background:#f0d48a;transform:translateY(-2px)}
+.btn-o{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-o:hover{border-color:var(--accent2);color:var(--accent2);transform:translateY(-2px)}
+.hero-loc{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.7rem;color:var(--text3);margin-top:2rem;opacity:0;animation:fup .8s 1s forwards}
+.hero-scroll{position:absolute;bottom:3rem;left:3rem;display:flex;align-items:center;gap:1rem;font-family:var(--mono);font-size:.65rem;color:var(--text3);letter-spacing:.15em;writing-mode:vertical-rl;opacity:0;animation:fup .8s 1.2s forwards}
+.hero-scroll::before{content:'';width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent);animation:sl 2s ease-in-out infinite}
+@keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fup{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:6rem 3rem;position:relative}
+.sh{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:4rem}
+.sn{font-family:var(--mono);font-size:.7rem;color:var(--accent);opacity:.6}
+.st{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600}
+.sl2{flex:1;height:1px;background:var(--border)}
+
+/* ABOUT */
+#about{background:var(--bg)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-frame{width:100%;aspect-ratio:3/4;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px))}
+.about-frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter .4s}
+.about-frame:hover img{filter:grayscale(0%)}
+.corner{position:absolute;width:60px;height:60px;border-color:var(--accent);border-style:solid}
+.corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.corner.br{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.badge{position:absolute;top:1.5rem;right:1.5rem;background:rgba(232,201,122,.1);border:1px solid var(--accent);color:var(--accent);font-family:var(--mono);font-size:.65rem;padding:.3rem .7rem;letter-spacing:.1em;z-index:2}
+/* 无照片时的占位 */
+.photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:var(--text3)}
+.photo-placeholder .ph-icon{font-size:4rem}
+.photo-placeholder p{font-family:var(--mono);font-size:.7rem;text-align:center;line-height:1.8;letter-spacing:.05em}
+.about-text h3{font-family:var(--serif);font-size:1.6rem;font-weight:600;margin-bottom:1.5rem}
+.about-text p{color:var(--text2);line-height:1.9;margin-bottom:1.2rem;font-size:.95rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat-item{text-align:center}
+.stat-n{font-family:var(--mono);font-size:1.6rem;color:var(--accent);display:block;line-height:1;margin-bottom:.4rem}
+.stat-l{font-size:.72rem;color:var(--text3);letter-spacing:.05em;line-height:1.5}
+
+/* SKILLS */
+#skills{background:var(--bg2)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.sk-card{background:var(--bg3);border:1px solid var(--border);padding:2rem;position:relative;transition:all .3s;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transition:transform .4s}
+.sk-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.sk-card:hover::before{transform:scaleX(1)}
+.sk-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.sk-name{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:.6rem}
+.sk-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:1.2rem}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.sk-tag{font-family:var(--mono);font-size:.65rem;padding:.2rem .6rem;background:var(--surface);color:var(--text3);border-radius:2px;border:1px solid var(--border)}
+
+/* PROJECTS */
+#projects{background:var(--bg)}
+.proj-list{display:flex;flex-direction:column;gap:1.5rem}
+.proj-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem;position:relative;transition:all .3s;overflow:hidden}
+.proj-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform .3s}
+.proj-card:hover{border-color:rgba(232,201,122,.3);transform:translateX(4px);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.proj-card:hover::before{transform:scaleY(1)}
+.proj-header{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.proj-num{font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em;opacity:.6;margin-bottom:.4rem}
+.proj-title{font-family:var(--serif);font-size:1.3rem;font-weight:600;margin-bottom:.3rem;transition:color .2s}
+.proj-card:hover .proj-title{color:var(--accent)}
+.proj-stack{display:flex;gap:.5rem;flex-wrap:wrap}
+.proj-stack span{font-family:var(--mono);font-size:.65rem;padding:.2rem .7rem;border:1px solid var(--border);color:var(--text3);border-radius:2px}
+.proj-desc{font-size:.88rem;color:var(--text2);line-height:1.9}
+.proj-metrics{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.metric{display:flex;flex-direction:column;gap:.2rem}
+.metric-val{font-family:var(--mono);font-size:1.2rem;color:var(--accent);font-weight:700}
+.metric-label{font-size:.72rem;color:var(--text3)}
+
+/* TIMELINE */
+#experience{background:var(--bg2)}
+.timeline{position:relative;padding-left:3rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),var(--border),transparent)}
+.tl-item{position:relative;margin-bottom:3.5rem;opacity:0;transform:translateX(-20px);transition:all .5s}
+.tl-item.visible{opacity:1;transform:translateX(0)}
+.tl-dot{position:absolute;left:-3rem;top:.4rem;width:10px;height:10px;background:var(--accent);border-radius:50%;transform:translateX(-4.5px);box-shadow:0 0 0 4px rgba(232,201,122,.15)}
+.tl-dot.special{background:var(--accent3);box-shadow:0 0 0 4px rgba(232,122,154,.15)}
+.tl-date{font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.5rem}
+.tl-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:.3rem}
+.tl-org{font-size:.85rem;color:var(--text2);margin-bottom:.8rem}
+.tl-desc{font-size:.85rem;color:var(--text2);line-height:1.8;max-width:650px}
+.tl-award{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.4rem 1rem;background:rgba(232,201,122,.08);border:1px solid rgba(232,201,122,.3);font-family:var(--mono);font-size:.68rem;color:var(--accent)}
+
+/* PHOTOS */
+#photos{background:var(--bg)}
+.photo-wall{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:.8rem}
+.ph-cell{background:var(--bg3);border:1px solid var(--border);overflow:hidden;position:relative;cursor:pointer;transition:all .4s}
+.ph-cell:nth-child(3n+1){grid-row:span 2}
+.ph-cell:nth-child(5n+2){grid-column:span 2}
+.ph-cell img{width:100%;height:100%;object-fit:cover;transition:transform .5s,filter .4s;filter:grayscale(30%) brightness(.8)}
+.ph-cell:hover img{transform:scale(1.05);filter:grayscale(0%) brightness(1)}
+.ph-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:1rem}
+.ph-cell:hover .ph-ov{opacity:1}
+.ph-cap{font-family:var(--serif);font-size:.85rem;color:white}
+
+/* BOOKS */
+#books{background:var(--bg2)}
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.5rem}
+.bk-card{cursor:pointer;transition:all .3s}
+.bk-card:hover{transform:translateY(-6px) rotate(-1deg)}
+.bk-cover{aspect-ratio:2/3;border-radius:2px;position:relative;overflow:hidden;margin-bottom:.8rem;box-shadow:-6px 6px 20px rgba(0,0,0,.5)}
+.bk-cover::before{content:'';position:absolute;top:0;left:0;width:8px;height:100%;background:rgba(0,0,0,.3);z-index:1}
+.bk-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;font-family:var(--serif);font-size:.9rem;font-weight:600;color:white}
+.bk-title{font-family:var(--serif);font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.2rem}
+.bk-author{font-size:.72rem;color:var(--text3)}
+.bk-stars{font-size:.65rem;color:var(--accent);margin-top:.3rem}
+
+/* THOUGHTS */
+#thoughts{background:var(--bg)}
+.th-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+.th-card{background:var(--bg2);border:1px solid var(--border);padding:2rem;transition:all .3s}
+.th-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.2);transform:translateY(-2px)}
+.th-date{font-family:var(--mono);font-size:.65rem;color:var(--text3);margin-bottom:1rem}
+.th-text{font-family:var(--serif);font-size:1rem;line-height:1.8;color:var(--text);font-style:italic}
+.th-tag{display:inline-block;margin-top:1.2rem;font-family:var(--mono);font-size:.65rem;color:var(--accent2);opacity:.7}
+
+/* CONTACT */
+#contact{background:var(--bg2)}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.contact-info h3{font-family:var(--serif);font-size:2rem;font-weight:600;margin-bottom:1rem}
+.contact-info p{color:var(--text2);line-height:1.8;margin-bottom:2rem}
+.c-links{display:flex;flex-direction:column;gap:.8rem}
+.c-link{display:flex;align-items:center;gap:1rem;text-decoration:none;color:var(--text2);font-size:.88rem;padding:.8rem 1rem;border:1px solid var(--border);transition:all .25s;position:relative;overflow:hidden}
+.c-link::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);transition:transform .3s;z-index:0}
+.c-link:hover::before{transform:translateX(0)}
+.c-link:hover{color:var(--bg);border-color:var(--accent)}
+.c-link span{position:relative;z-index:1}
+.c-form{display:flex;flex-direction:column;gap:1rem}
+.f-group{display:flex;flex-direction:column;gap:.4rem}
+.f-label{font-family:var(--mono);font-size:.65rem;color:var(--text3);letter-spacing:.12em;text-transform:uppercase}
+.f-input,.f-textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-size:.88rem;font-family:var(--sans);transition:border-color .2s;outline:none;resize:none}
+.f-input:focus,.f-textarea:focus{border-color:var(--accent)}
+.f-textarea{min-height:120px}
+
+footer{padding:2rem 3rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+footer a{color:var(--accent);text-decoration:none}
+
+.reveal{opacity:0;transform:translateY(30px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .nav-toggle{display:block}
+  section{padding:4rem 1.5rem}
+  #hero{padding:5rem 1.5rem 2rem}
+  .about-grid,.contact-wrap{grid-template-columns:1fr;gap:2.5rem}
+  .photo-wall{grid-template-columns:repeat(2,1fr)}
+  .proj-header{flex-direction:column}
+  .hero-scroll{display:none}
+  .proj-metrics{gap:1rem}
+}
+@media(hover:none){.cursor,.cursor-ring{display:none}body{cursor:auto}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">颜彪 ·</a>
+  <ul class="nav-links">
+    <li><a href="#about">关于</a></li>
+    <li><a href="#skills">技能</a></li>
+    <li><a href="#projects">作品</a></li>
+    <li><a href="#experience">经历</a></li>
+    <li><a href="#photos">相册</a></li>
+    <li><a href="#books">书单</a></li>
+    <li><a href="#thoughts">思考</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
+  <div class="nav-status"><div class="status-dot"></div><span>开放合作中</span></div>
+  <button class="nav-toggle" onclick="toggleNav()">☰</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-content">
+    <div class="hero-tag" id="typeTag">✦ AI Trainer · 杭州</div>
+    <h1 class="hero-name">你好，我是<br><span class="outline">颜 彪</span></h1>
+    <p class="hero-desc">
+      今天你做别人不愿意做的事情，<br>
+      明天你就能做到别人做不到的事情。
+    </p>
+    <div class="hero-tags">
+      <span class="htag">🤖 AI 训练师</span>
+      <span class="htag">📊 数据标注</span>
+      <span class="htag">📱 自媒体创作</span>
+      <span class="htag">🚀 产品运营</span>
+      <span class="htag">👥 团队管理</span>
+      <span class="htag">📍 杭州</span>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-p">✦ 查看项目</a>
+      <a href="#contact" class="btn btn-o">联系我</a>
+    </div>
+    <div class="hero-loc">📍 中国 · 杭州 &nbsp;|&nbsp; 🕐 开放合作与交流</div>
+  </div>
+  <div class="hero-scroll">SCROLL DOWN</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sh reveal"><span class="sn">01</span><h2 class="st">关于我</h2><div class="sl2"></div></div>
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="about-frame">
+        <img src="https://raw.githubusercontent.com/a1803216348-ui/a1803216348-ui.github.io/main/B7B0A164-BDD2-4940-BFD7-EF2CB2F29E49_1_105_c.jpeg" alt="颜彪">
+        <div class="corner tl"></div>
+        <div class="corner br"></div>
+        <div class="badge">杭州 · AI行业</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h3>从国企工程师到 AI 训练师</h3>
+      <p>
+        在国有企业深耕土木与生产管理领域 4 年，见证了传统行业对数字化与智能化的迫切需求。
+        2025 年果断转型，投身 AI 行业，用实践证明：兴趣才是最好的老师。
+      </p>
+      <p>
+        现专注于大规模多模态数据标注体系搭建，负责跨境电商爆品识别模型的数据全流程工作。
+        每天坚持阅读 AI 行业资讯，相信持续的信息积累是在这个行业站稳脚跟的基础。
+      </p>
+      <p>
+        信条：今天你做别人不愿意做的事情，明天你就能做到别人做不到的事情。
+        这句话既是对自己的鞭策，也是我从国企转型 AI 这段经历的真实写照。
+      </p>
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-n">6年</span>
+          <span class="stat-l">4年国企<br>2年AI行业</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-n">2个</span>
+          <span class="stat-l">核心落地<br>项目</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-n">每日</span>
+          <span class="stat-l">坚持阅读<br>AI资讯</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sh reveal"><span class="sn">02</span><h2 class="st">技能与专长</h2><div class="sl2"></div></div>
+  <div class="skills-grid">
+    <div class="sk-card reveal">
+      <span class="sk-icon">🏗️</span>
+      <div class="sk-name">多模态数据标注体系</div>
+      <div class="sk-desc">主导大规模多模态数据标注体系的搭建，涵盖图文、视频等多种数据类型，制定标准化标注规范与质检规则，保障训练数据高质量交付。</div>
+      <div class="sk-tags"><span class="sk-tag">多模态标注</span><span class="sk-tag">质检体系</span><span class="sk-tag">规范制定</span><span class="sk-tag">RLHF</span></div>
+    </div>
+    <div class="sk-card reveal">
+      <span class="sk-icon">🤖</span>
+      <div class="sk-name">AI 数据训练</div>
+      <div class="sk-desc">负责大语言模型及视觉模型训练数据的采集、清洗与标注全流程，深度参与模型迭代优化，理解模型训练的核心逻辑。</div>
+      <div class="sk-tags"><span class="sk-tag">数据采集</span><span class="sk-tag">数据清洗</span><span class="sk-tag">模型反馈</span><span class="sk-tag">迭代优化</span></div>
+    </div>
+    <div class="sk-card reveal">
+      <span class="sk-icon">🚀</span>
+      <div class="sk-name">产品运营</div>
+      <div class="sk-desc">具备用户增长与产品运营实战经验，善于从数据中发现规律，制定并落地有效的运营策略，推动业务指标提升。</div>
+      <div class="sk-tags"><span class="sk-tag">用户增长</span><span class="sk-tag">活动策划</span><span class="sk-tag">数据分析</span><span class="sk-tag">运营策略</span></div>
+    </div>
+    <div class="sk-card reveal">
+      <span class="sk-icon">👥</span>
+      <div class="sk-name">团队管理</div>
+      <div class="sk-desc">统筹管理标注员与质检员团队，制定作业 SOP，对接产品经理明确需求与迭代方向，通过规范化流程管理提升团队整体效率。</div>
+      <div class="sk-tags"><span class="sk-tag">SOP制定</span><span class="sk-tag">团队统筹</span><span class="sk-tag">需求对接</span><span class="sk-tag">质量管控</span></div>
+    </div>
+    <div class="sk-card reveal">
+      <span class="sk-icon">📱</span>
+      <div class="sk-name">自媒体内容创作</div>
+      <div class="sk-desc">专注 AI 行业内容创作，每日跟踪行业资讯，将技术动态转化为通俗易懂的内容，持续输出 AI 领域的观察与洞见。</div>
+      <div class="sk-tags"><span class="sk-tag">内容策划</span><span class="sk-tag">AI资讯</span><span class="sk-tag">知识输出</span><span class="sk-tag">行业洞察</span></div>
+    </div>
+    <div class="sk-card reveal">
+      <span class="sk-icon">🔧</span>
+      <div class="sk-name">数据工程 & Python</div>
+      <div class="sk-desc">具备 Python 结合 SQL 的数据自动化处理能力，能够搭建数据抓取、匹配与异常校验模块，解决实际业务的数据链路问题。</div>
+      <div class="sk-tags"><span class="sk-tag">Python</span><span class="sk-tag">SQL</span><span class="sk-tag">数据自动化</span><span class="sk-tag">异常校验</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sh reveal"><span class="sn">03</span><h2 class="st">核心项目</h2><div class="sl2"></div></div>
+  <div class="proj-list">
+
+    <!-- 项目一 -->
+    <div class="proj-card reveal">
+      <div class="proj-header">
+        <div>
+          <div class="proj-num">PROJECT · 001</div>
+          <div class="proj-title">生产企业销售-生产数据链路 AI 优化</div>
+        </div>
+        <div class="proj-stack">
+          <span>Python</span><span>SQL</span><span>数据自动化</span><span>AI降本增效</span>
+        </div>
+      </div>
+      <div class="proj-desc">
+        在国有生产型企业主导"销售-生产数据链路的AI优化项目"。针对每月需要整合的
+        <strong style="color:var(--text)">3类销售台账、5类生产日报表</strong>，
+        用 Python 结合 SQL 搭建了数据自动抓取、匹配与异常校验模块。
+        把原本需要跨 3 个部门、耗时 5 天的数据核对工作缩短到 <strong style="color:var(--accent)">2小时完成</strong>，
+        并实现了销量异动对生产计划的自动预警，帮助生产部门排产响应速度提升 70%，
+        成品库存周转率提高 22%。
+      </div>
+      <div class="proj-metrics">
+        <div class="metric"><span class="metric-val">5天→2h</span><span class="metric-label">数据核对时间压缩</span></div>
+        <div class="metric"><span class="metric-val">70%</span><span class="metric-label">排产响应速度提升</span></div>
+        <div class="metric"><span class="metric-val">22%</span><span class="metric-label">库存周转率提升</span></div>
+        <div class="metric"><span class="metric-val">3部门</span><span class="metric-label">跨部门协作打通</span></div>
+      </div>
+    </div>
+
+    <!-- 项目二 -->
+    <div class="proj-card reveal">
+      <div class="proj-header">
+        <div>
+          <div class="proj-num">PROJECT · 002</div>
+          <div class="proj-title">Shopee & Temu 跨境电商爆品识别模型标注</div>
+        </div>
+        <div class="proj-stack">
+          <span>数据标注</span><span>质检管理</span><span>跨境电商</span><span>多模态</span>
+        </div>
+      </div>
+      <div class="proj-desc">
+        针对 Shopee、Temu 跨境电商平台爆品识别模型，负责相关数据的
+        <strong style="color:var(--text)">采集、清洗与标注全流程</strong>工作。
+        以此项目为载体统筹管理标注员与质检员团队，制定标准化标注规范、质检规则及作业流程。
+        同时对接产品经理，明确数据需求、验收标准与项目迭代方向，
+        通过规范化流程管理有效提升数据标注效率与训练数据质量，
+        为电商爆品识别模型提供了<strong style="color:var(--accent)">高质量标注数据集</strong>。
+      </div>
+      <div class="proj-metrics">
+        <div class="metric"><span class="metric-val">全流程</span><span class="metric-label">数据采集→标注→质检</span></div>
+        <div class="metric"><span class="metric-val">多平台</span><span class="metric-label">Shopee & Temu</span></div>
+        <div class="metric"><span class="metric-val">团队管理</span><span class="metric-label">标注员+质检员统筹</span></div>
+        <div class="metric"><span class="metric-val">爆品识别</span><span class="metric-label">模型训练数据支撑</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sh reveal"><span class="sn">04</span><h2 class="st">经历轨迹</h2><div class="sl2"></div></div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2025 — 至今</div>
+      <div class="tl-title">AI 训练师 / 数据项目负责人</div>
+      <div class="tl-org">电商 AI 行业 · 杭州 · 全职</div>
+      <div class="tl-desc">
+        从事跨境电商 AI 数据训练工作，负责 Shopee、Temu 爆品识别模型的数据标注全流程管理。
+        统筹标注与质检团队，制定 SOP，对接产品迭代需求。
+        每日坚持阅读 AI 行业资讯（自 2025 年 4 月起），持续深化对大模型发展动态的认知。
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot special"></div>
+      <div class="tl-date">2025</div>
+      <div class="tl-title">🏆 国有企业 AI 转型方案比赛</div>
+      <div class="tl-org">行业竞赛 · 荣誉</div>
+      <div class="tl-desc">
+        参与国有企业对于 AI 行业转型及降本增效的实施方案比赛，凭借在生产数据链路 AI 优化项目中的实战经验，提交了切实可行的解决方案。
+      </div>
+      <div class="tl-award">🥉 获得三等奖</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2020 — 2025</div>
+      <div class="tl-title">项目管理 / 数据优化负责人</div>
+      <div class="tl-org">国有生产型企业 · 土木行业 · 全职</div>
+      <div class="tl-desc">
+        在国企深耕 5 年，从一线技术岗成长为跨部门项目负责人。
+        主导"销售-生产数据链路 AI 优化项目"，用 Python + SQL 将 5 天的数据核对缩短至 2 小时，
+        实现生产排产自动预警，库存周转率提升 22%。
+        这段经历让我深刻理解传统行业的痛点，也坚定了转型 AI 的决心。
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHOTOS -->
+<section id="photos">
+  <div class="sh reveal"><span class="sn">05</span><h2 class="st">影像记录</h2><div class="sl2"></div></div>
+  <!-- ✏️ 把这里换成你自己的照片链接，修改 ph-cap 为对应说明 -->
+  <div class="photo-wall reveal">
+    <div class="ph-cell"><img src="https://raw.githubusercontent.com/a1803216348-ui/a1803216348-ui.github.io/main/4275fd1b79d2f05c8e7d538edbcbb999.jpg" alt=""><div class="ph-ov"><span class="ph-cap">杭州 · 西湖</span></div></div>
+    <div class="ph-cell"><img src="https://raw.githubusercontent.com/a1803216348-ui/a1803216348-ui.github.io/main/C9EA2113-B7F1-4D74-82D8-514F7EB918DE_1_105_c.jpeg" alt=""><div class="ph-ov"><span class="ph-cap">城市夜色</span></div></div>
+    <div class="ph-cell"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt=""><div class="ph-ov"><span class="ph-cap">山川 · 远方</span></div></div>
+    <div class="ph-cell"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt=""><div class="ph-ov"><span class="ph-cap">街头 · 行走</span></div></div>
+    <div class="ph-cell"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt=""><div class="ph-ov"><span class="ph-cap">日常 · 记录</span></div></div>
+    <div class="ph-cell"><img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80" alt=""><div class="ph-ov"><span class="ph-cap">自然 · 呼吸</span></div></div>
+    <div class="ph-cell"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80" alt=""><div class="ph-ov"><span class="ph-cap">古城 · 时光</span></div></div>
+    <div class="ph-cell"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80" alt=""><div class="ph-ov"><span class="ph-cap">旅途 · 风景</span></div></div>
+  </div>
+</section>
+
+<!-- BOOKS -->
+<section id="books">
+  <div class="sh reveal"><span class="sn">06</span><h2 class="st">AI 书单</h2><div class="sl2"></div></div>
+  <div class="books-grid">
+    <div class="bk-card reveal">
+      <div class="bk-cover"><div class="bk-ph" style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)">AI 2041</div></div>
+      <div class="bk-title">AI 2041</div>
+      <div class="bk-author">李开复 / 陈楸帆</div>
+      <div class="bk-stars">★★★★★</div>
+    </div>
+    <div class="bk-card reveal">
+      <div class="bk-cover"><div class="bk-ph" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)">人工智能时代</div></div>
+      <div class="bk-title">人工智能时代</div>
+      <div class="bk-author">杰瑞·卡普兰</div>
+      <div class="bk-stars">★★★★★</div>
+    </div>
+    <div class="bk-card reveal">
+      <div class="bk-cover"><div class="bk-ph" style="background:linear-gradient(135deg,#2d1b69,#11998e)">GPT时代</div></div>
+      <div class="bk-title">GPT 时代</div>
+      <div class="bk-author">郭杰群</div>
+      <div class="bk-stars">★★★★★</div>
+    </div>
+    <div class="bk-card reveal">
+      <div class="bk-cover"><div class="bk-ph" style="background:linear-gradient(135deg,#134e5e,#71b280)">深度学习</div></div>
+      <div class="bk-title">深度学习</div>
+      <div class="bk-author">Goodfellow 等</div>
+      <div class="bk-stars">★★★★☆</div>
+    </div>
+    <div class="bk-card reveal">
+      <div class="bk-cover"><div class="bk-ph" style="background:linear-gradient(135deg,#4a1942,#c74b50)">奇点临近</div></div>
+      <div class="bk-title">奇点临近</div>
+      <div class="bk-author">雷·库兹韦尔</div>
+      <div class="bk-stars">★★★★★</div>
+    </div>
+    <div class="bk-card reveal">
+      <div class="bk-cover"><div class="bk-ph" style="background:linear-gradient(135deg,#373b44,#4286f4)">数据标注工程</div></div>
+      <div class="bk-title">数据标注工程</div>
+      <div class="bk-author">行业实践指南</div>
+      <div class="bk-stars">★★★★★</div>
+    </div>
+  </div>
+</section>
+
+<!-- THOUGHTS -->
+<section id="thoughts">
+  <div class="sh reveal"><span class="sn">07</span><h2 class="st">近期思考</h2><div class="sl2"></div></div>
+  <!-- ✏️ 换成你自己写过的话 -->
+  <div class="th-grid">
+    <div class="th-card reveal">
+      <div class="th-date">2025.04</div>
+      <div class="th-text">今天你做别人不愿意做的事情，<br>明天你就能做到别人做不到的事情。<br>这不是鸡汤，是我转型的底层逻辑。</div>
+      <span class="th-tag"># 人生信条</span>
+    </div>
+    <div class="th-card reveal">
+      <div class="th-date">2025.03</div>
+      <div class="th-text">从国企到 AI 行业，很多人觉得跨度太大。<br>但我发现：做过生产管理的人，<br>反而更懂什么叫"数据质量"。</div>
+      <span class="th-tag"># 转型感悟</span>
+    </div>
+    <div class="th-card reveal">
+      <div class="th-date">2025.02</div>
+      <div class="th-text">AI 数据标注不是简单的体力活，<br>它是在帮 AI 建立对世界的认知框架。<br>每一条标注，都是在教机器"理解"。</div>
+      <span class="th-tag"># AI与数据</span>
+    </div>
+    <div class="th-card reveal">
+      <div class="th-date">2025.01</div>
+      <div class="th-text">兴趣才是最好的老师。<br>当你发现某件事让你愿意主动去学、去研究，<br>那就是你该去的方向。</div>
+      <span class="th-tag"># 成长</span>
+    </div>
+    <div class="th-card reveal">
+      <div class="th-date">2024.12</div>
+      <div class="th-text">在国企做了 5 年数据工作，<br>最大的收获不是技能，<br>而是学会了如何在复杂系统里找到关键节点。</div>
+      <span class="th-tag"># 复杂系统</span>
+    </div>
+    <div class="th-card reveal">
+      <div class="th-date">2024.11</div>
+      <div class="th-text">跨境电商爆品识别这个项目让我意识到：<br>好的训练数据，比好的模型架构更稀缺。<br>数据是 AI 真正的护城河。</div>
+      <span class="th-tag"># 数据价值</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sh reveal"><span class="sn">08</span><h2 class="st">与我联系</h2><div class="sl2"></div></div>
+  <div class="contact-wrap">
+    <div class="contact-info reveal">
+      <h3>随时欢迎你的来访</h3>
+      <p>
+        无论是 AI 数据训练的合作机会、<br>
+        跨境电商相关的项目交流，<br>
+        还是想聊聊 AI 行业的观察与思考，<br>
+        都欢迎来找我。通常 24 小时内回复。
+      </p>
+      <div class="c-links">
+        <a href="mailto:1803216348@qq.com" class="c-link">
+          <span>📧</span><span>1803216348@qq.com</span>
+        </a>
+        <a href="#" class="c-link">
+          <span>💬</span><span>微信 · 1500267002</span>
+        </a>
+        <a href="#" class="c-link">
+          <span>📍</span><span>中国 · 杭州</span>
+        </a>
+      </div>
+    </div>
+    <div class="c-form reveal">
+      <div class="f-group"><label class="f-label">姓名 / Name</label><input type="text" class="f-input" placeholder="你叫什么"></div>
+      <div class="f-group"><label class="f-label">邮件 / Email</label><input type="email" class="f-input" placeholder="your@email.com"></div>
+      <div class="f-group"><label class="f-label">留言 / Message</label><textarea class="f-textarea" placeholder="想说的话都可以写在这里..."></textarea></div>
+      <button class="btn btn-p" onclick="submitForm(this)">✦ 发送消息</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2025 <a href="#">颜彪</a> · 今天做别人不愿做的事，明天做到别人做不到的事</div>
+  <div>📍 杭州 · Built with ♥ and Claude</div>
+</footer>
+
+<script>
+// Cursor
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function anim(){cursor.style.left=mx+'px';cursor.style.top=my+'px';rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+document.querySelectorAll('a,button,.bk-card,.ph-cell,.sk-card,.proj-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.opacity='.2'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='.5'});
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),80);obs.unobserve(e.target)}});
+},{threshold:.1});
+document.querySelectorAll('.reveal,.tl-item').forEach(el=>obs.observe(el));
+
+// Stagger grids
+const gObs=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.sk-card,.bk-card,.th-card,.proj-card').forEach((item,i)=>{
+        item.classList.add('reveal');
+        setTimeout(()=>item.classList.add('visible'),i*100);
+      });
+      gObs.unobserve(entry.target);
+    }
+  });
+},{threshold:.05});
+document.querySelectorAll('.skills-grid,.books-grid,.th-grid,.proj-list').forEach(el=>gObs.observe(el));
+
+// Active nav
+const secs=document.querySelectorAll('section[id]');
+const nls=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-200)cur=s.id});
+  nls.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--accent)':''});
+});
+
+// Mobile nav
+function toggleNav(){
+  const l=document.querySelector('.nav-links');
+  if(l.style.display==='flex'){l.style.display='none'}
+  else{l.style.cssText='display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--bg2);padding:1.5rem;gap:1.2rem;border-bottom:1px solid var(--border)';
+    l.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>l.style.display='none'))}
+}
+
+// Form
+function submitForm(btn){
+  btn.textContent='✓ 发送成功！';btn.style.background='#4ade80';
+  setTimeout(()=>{btn.textContent='✦ 发送消息';btn.style.background=''},3000)
+}
+
+// Typewriter
+const phrases=['AI Trainer · 杭州','数据是AI的护城河 ✦','今天做别人不愿做的事','从国企到AI行业 · 6年沉淀'];
+let pi=0,ci=0,del=false;
+const tagEl=document.getElementById('typeTag');
+function type(){
+  const p=phrases[pi];
+  if(!del){tagEl.textContent='✦ '+p.slice(0,ci+1);ci++;if(ci===p.length){del=true;setTimeout(type,1800);return}}
+  else{tagEl.textContent='✦ '+p.slice(0,ci-1);ci--;if(ci===0){del=false;pi=(pi+1)%phrases.length;setTimeout(type,300);return}}
+  setTimeout(type,del?40:80);
+}
+setTimeout(type,1200);
+</script>
+</body>
+</html>
